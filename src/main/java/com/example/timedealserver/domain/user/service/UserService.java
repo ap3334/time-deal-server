@@ -37,6 +37,7 @@ public class UserService {
 
     }
 
+    @Transactional(readOnly = true)
     public User login(UserLoginRequestDto dto) {
 
         Optional<User> optionalUser = userRepository.findByUsername(dto.getUsername());

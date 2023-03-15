@@ -30,4 +30,8 @@ public class Product extends BaseEntity {
         this.brand = brand;
         this.user = user;
     }
+
+    public void changePrice(int price) {
+        this.price = price;
+    }
 }

@@ -1,8 +1,10 @@
 package com.example.timedealserver.domain.product.service;
 
 import com.example.timedealserver.domain.product.dto.request.ProductAddRequestDto;
+import com.example.timedealserver.domain.product.dto.request.ProductModifyRequestDto;
 import com.example.timedealserver.domain.product.dto.response.ProductSimpleResponse;
 import com.example.timedealserver.domain.product.entity.Product;
+import com.example.timedealserver.domain.product.exeption.ProductExceptionType;
 import com.example.timedealserver.domain.product.respository.ProductRepository;
 import com.example.timedealserver.domain.user.SessionConstants;
 import com.example.timedealserver.domain.user.entity.User;
@@ -12,10 +14,12 @@ import com.example.timedealserver.global.exeption.BusinessLogicException;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Transactional
 @RequiredArgsConstructor
 @Service
 public class ProductService {
@@ -33,6 +37,7 @@ public class ProductService {
         return savedProduct.getId();
     }
 
+    @Transactional(readOnly = true)
     public List<ProductSimpleResponse> showProductList(HttpSession session) {
 
         User loginUser = checkLoginStatus(session);
@@ -43,6 +48,24 @@ public class ProductService {
 
         return products.stream().map(product ->
                 new ProductSimpleResponse(product.getName(), product.getPrice())).collect(Collectors.toList());
+    }
+
+    public Long modifyProduct(HttpSession session, Long productId, ProductModifyRequestDto productModifyRequestDto) {
+
+        User loginUser = checkLoginStatus(session);
+
+        checkAdminUser(loginUser);
+
+        Product product = productRepository.findById(productId).orElseThrow(() ->
+                new BusinessLogicException(ProductExceptionType.NOT_FOUND_PRODUCT));
+
+        if (!product.getUser().getId().equals(loginUser.getId())) {
+            throw new BusinessLogicException(UserExceptionType.NOT_FOUND_ROLE);
+        }
+
+        product.changePrice(productModifyRequestDto.getPrice());
+
+        return product.getId();
     }
 
     private static User checkLoginStatus(HttpSession session) {
@@ -58,4 +81,5 @@ public class ProductService {
             throw new BusinessLogicException(UserExceptionType.NOT_FOUND_ROLE);
         }
     }
+
 }
