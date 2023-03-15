@@ -56,16 +56,23 @@ public class ProductService {
 
         checkAdminUser(loginUser);
 
-        Product product = productRepository.findById(productId).orElseThrow(() ->
-                new BusinessLogicException(ProductExceptionType.NOT_FOUND_PRODUCT));
-
-        if (!product.getUser().getId().equals(loginUser.getId())) {
-            throw new BusinessLogicException(UserExceptionType.NOT_FOUND_ROLE);
-        }
+        Product product = checkProductUser(productId, loginUser);
 
         product.changePrice(productModifyRequestDto.getPrice());
 
         return product.getId();
+    }
+
+    public void deleteProduct(HttpSession session, Long productId) {
+
+        User loginUser = checkLoginStatus(session);
+
+        checkAdminUser(loginUser);
+
+        Product product = checkProductUser(productId, loginUser);
+
+        productRepository.delete(product);
+
     }
 
     private static User checkLoginStatus(HttpSession session) {
@@ -80,6 +87,16 @@ public class ProductService {
         if (loginUser.getRole().equals(Role.USER)) {
             throw new BusinessLogicException(UserExceptionType.NOT_FOUND_ROLE);
         }
+    }
+
+    private Product checkProductUser(Long productId, User loginUser) {
+        Product product = productRepository.findById(productId).orElseThrow(() ->
+                new BusinessLogicException(ProductExceptionType.NOT_FOUND_PRODUCT));
+
+        if (!product.getUser().getId().equals(loginUser.getId())) {
+            throw new BusinessLogicException(UserExceptionType.NOT_FOUND_ROLE);
+        }
+        return product;
     }
 
 }

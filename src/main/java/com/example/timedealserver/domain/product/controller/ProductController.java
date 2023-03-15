@@ -53,4 +53,14 @@ public class ProductController {
 
         return new ResponseEntity<>(id, HttpStatus.OK);
     }
+
+    @DeleteMapping("/{productId}")
+    public ResponseEntity modifyProduct(@PathVariable Long productId, HttpServletRequest request) {
+
+        HttpSession session = request.getSession(false);
+
+        productService.deleteProduct(session, productId);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }
