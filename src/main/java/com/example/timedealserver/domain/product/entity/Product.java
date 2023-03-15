@@ -1,10 +1,11 @@
 package com.example.timedealserver.domain.product.entity;
 
-import com.example.timedealserver.domain.brand.entity.Brand;
+import com.example.timedealserver.domain.user.entity.User;
 import com.example.timedealserver.global.entity.BaseEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -17,7 +18,16 @@ public class Product extends BaseEntity {
 
     private int price;
 
-    @ManyToOne
-    private Brand brand;
+    private String brand;
 
+    @ManyToOne
+    private User user;
+
+    @Builder
+    public Product(String name, int price, String brand, User user) {
+        this.name = name;
+        this.price = price;
+        this.brand = brand;
+        this.user = user;
+    }
 }
