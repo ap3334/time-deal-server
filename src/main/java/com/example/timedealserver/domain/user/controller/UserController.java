@@ -52,4 +52,14 @@ public class UserController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
+    @DeleteMapping("/delete")
+    public ResponseEntity deleteUser(HttpServletRequest request) {
+
+        HttpSession session = request.getSession(false);
+
+        userService.deleteUser(session);
+
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
 }

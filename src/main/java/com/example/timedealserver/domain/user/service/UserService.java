@@ -1,11 +1,13 @@
 package com.example.timedealserver.domain.user.service;
 
+import com.example.timedealserver.domain.user.SessionConstants;
 import com.example.timedealserver.domain.user.dto.request.UserJoinRequestDto;
 import com.example.timedealserver.domain.user.dto.request.UserLoginRequestDto;
 import com.example.timedealserver.domain.user.entity.User;
 import com.example.timedealserver.domain.user.exeption.UserExceptionType;
 import com.example.timedealserver.domain.user.repository.UserRepository;
 import com.example.timedealserver.global.exeption.BusinessLogicException;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,6 +50,17 @@ public class UserService {
         } else {
             throw new BusinessLogicException(UserExceptionType.NOT_EXIST_ID);
         }
+
+    }
+
+    public void deleteUser(HttpSession session) {
+
+        if (session == null) {
+            throw new BusinessLogicException(UserExceptionType.NOT_FOUND_ROLE);
+        }
+
+        User loginUser = (User) session.getAttribute(SessionConstants.LOGIN_USER);
+        userRepository.delete(loginUser);
 
     }
 }
