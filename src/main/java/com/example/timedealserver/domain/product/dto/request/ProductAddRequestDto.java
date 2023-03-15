@@ -1,4 +1,4 @@
-package com.example.timedealserver.domain.product.dto;
+package com.example.timedealserver.domain.product.dto.request;
 
 import com.example.timedealserver.domain.product.entity.Product;
 import com.example.timedealserver.domain.user.entity.User;
