@@ -3,6 +3,7 @@ package com.example.timedealserver.domain.user.dto.request;
 import com.example.timedealserver.domain.user.entity.User;
 import com.example.timedealserver.global.enums.Gender;
 import com.example.timedealserver.global.enums.Role;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,18 +11,25 @@ import lombok.Setter;
 @Setter
 public class UserJoinRequestDto {
 
+    @NotBlank
     private String username;
 
+    @NotBlank
     private String password;
 
+    @NotBlank
     private String passwordConfirm;
 
+    @NotBlank
     private String email;
 
+    @NotBlank
     private String phoneNumber;
 
+    @NotBlank
     private String gender;
 
+    @NotBlank
     private String role;
 
     public User toEntity() {
