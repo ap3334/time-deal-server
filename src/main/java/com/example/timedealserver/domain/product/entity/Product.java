@@ -4,22 +4,23 @@ import com.example.timedealserver.domain.user.entity.User;
 import com.example.timedealserver.global.entity.BaseEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class Product extends BaseEntity {
 
+    @NonNull
     private String name;
 
+    @NonNull
     private int price;
 
+    @NonNull
     private String brand;
 
+    @NonNull
     @ManyToOne
     private User user;
 
