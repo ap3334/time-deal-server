@@ -41,4 +41,15 @@ public class UserController {
         return new ResponseEntity<>(loginUser.getId(), HttpStatus.OK);
     }
 
+    @DeleteMapping()
+    public ResponseEntity logout(HttpServletRequest request) {
+
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            session.invalidate();
+        }
+
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
 }
