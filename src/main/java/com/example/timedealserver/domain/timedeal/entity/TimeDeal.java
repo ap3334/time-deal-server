@@ -36,4 +36,16 @@ public class TimeDeal extends BaseEntity {
         this.startTime = startTime;
         this.product = product;
     }
+
+    public void changeAmount(int amount) {
+        this.amount = amount;
+    }
+
+    public void changeDiscountPrice(int discountPrice) {
+        this.discountPrice = discountPrice;
+    }
+
+    public void changeStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
+    }
 }

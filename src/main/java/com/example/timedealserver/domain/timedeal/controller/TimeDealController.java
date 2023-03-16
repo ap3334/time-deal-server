@@ -1,6 +1,7 @@
 package com.example.timedealserver.domain.timedeal.controller;
 
 import com.example.timedealserver.domain.timedeal.dto.request.TimeDealAddRequestDto;
+import com.example.timedealserver.domain.timedeal.dto.request.TimeDealModifyRequestDto;
 import com.example.timedealserver.domain.timedeal.service.TimeDealService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -36,6 +37,19 @@ public class TimeDealController {
         timeDealService.deleteTimeDeal(session, timedealId);
 
         return new ResponseEntity<>(HttpStatus.OK);
+
+    }
+
+    @PutMapping("/{timedealId}")
+    public ResponseEntity<Long> modifyTimeDeal(@PathVariable Long timedealId,
+                                               @Valid @RequestBody TimeDealModifyRequestDto timeDealModifyRequestDto,
+                                               HttpServletRequest request) {
+
+        HttpSession session = request.getSession(false);
+
+        Long id = timeDealService.modifyTimeDeal(session, timedealId, timeDealModifyRequestDto);
+
+        return new ResponseEntity<>(id, HttpStatus.OK);
 
     }
 }

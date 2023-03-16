@@ -4,6 +4,7 @@ import com.example.timedealserver.domain.product.entity.Product;
 import com.example.timedealserver.domain.product.exeption.ProductExceptionType;
 import com.example.timedealserver.domain.product.respository.ProductRepository;
 import com.example.timedealserver.domain.timedeal.dto.request.TimeDealAddRequestDto;
+import com.example.timedealserver.domain.timedeal.dto.request.TimeDealModifyRequestDto;
 import com.example.timedealserver.domain.timedeal.entity.TimeDeal;
 import com.example.timedealserver.domain.timedeal.exeption.TimeDealExceptionType;
 import com.example.timedealserver.domain.timedeal.repository.TimeDealRepository;
@@ -52,6 +53,20 @@ public class TimeDealService {
 
     }
 
+    public Long modifyTimeDeal(HttpSession session, Long timedealId, TimeDealModifyRequestDto dto) {
+
+        User loginUser = checkLoginStatus(session);
+
+        checkAdminUser(loginUser);
+
+        TimeDeal timeDeal = checkTimeDealUser(timedealId, loginUser);
+        timeDeal.changeAmount(dto.getAmount());
+        timeDeal.changeDiscountPrice(dto.getDiscountPrice());
+        timeDeal.changeStartTime(dto.getStartTime());
+
+        return timedealId;
+    }
+
     private TimeDeal checkTimeDealUser(Long timedealId, User loginUser) {
 
         TimeDeal timeDeal = timeDealRepository.findById(timedealId).orElseThrow(() ->
@@ -87,5 +102,4 @@ public class TimeDealService {
         }
         return product;
     }
-
 }
