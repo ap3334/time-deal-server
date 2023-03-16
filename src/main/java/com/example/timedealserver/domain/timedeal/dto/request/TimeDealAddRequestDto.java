@@ -13,8 +13,6 @@ public class TimeDealAddRequestDto {
 
     private int discountPrice;
 
-    private int originalPrice;
-
     private Long productId;
 
     private LocalDateTime startTime;
@@ -24,7 +22,7 @@ public class TimeDealAddRequestDto {
         return TimeDeal.builder()
                 .amount(amount)
                 .discountPrice(discountPrice)
-                .originalPrice(originalPrice)
+                .originalPrice(product.getPrice())
                 .product(product)
                 .startTime(startTime)
                 .build();

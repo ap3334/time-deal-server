@@ -5,6 +5,7 @@ import com.example.timedealserver.domain.product.exeption.ProductExceptionType;
 import com.example.timedealserver.domain.product.respository.ProductRepository;
 import com.example.timedealserver.domain.timedeal.dto.request.TimeDealAddRequestDto;
 import com.example.timedealserver.domain.timedeal.entity.TimeDeal;
+import com.example.timedealserver.domain.timedeal.exeption.TimeDealExceptionType;
 import com.example.timedealserver.domain.timedeal.repository.TimeDealRepository;
 import com.example.timedealserver.domain.user.SessionConstants;
 import com.example.timedealserver.domain.user.entity.User;
@@ -36,6 +37,31 @@ public class TimeDealService {
         timeDealRepository.save(timeDeal);
 
         return timeDeal.getId();
+    }
+
+
+    public void deleteTimeDeal(HttpSession session, Long timedealId) {
+
+        User loginUser = checkLoginStatus(session);
+
+        checkAdminUser(loginUser);
+
+        TimeDeal timeDeal = checkTimeDealUser(timedealId, loginUser);
+
+        timeDealRepository.delete(timeDeal);
+
+    }
+
+    private TimeDeal checkTimeDealUser(Long timedealId, User loginUser) {
+
+        TimeDeal timeDeal = timeDealRepository.findById(timedealId).orElseThrow(() ->
+                new BusinessLogicException(TimeDealExceptionType.NOT_FOUND_TIMEDEAL));
+
+        if (!timeDeal.getProduct().getUser().getId().equals(loginUser.getId())) {
+            throw new BusinessLogicException(UserExceptionType.NOT_FOUND_ROLE);
+        }
+
+        return timeDeal;
     }
 
     private static User checkLoginStatus(HttpSession session) {
