@@ -6,14 +6,14 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ProductSimpleResponse {
+public class ProductListResponseDto {
 
     private String name;
 
     private int price;
 
     @Builder
-    public ProductSimpleResponse(String name, int price) {
+    public ProductListResponseDto(String name, int price) {
         this.name = name;
         this.price = price;
     }

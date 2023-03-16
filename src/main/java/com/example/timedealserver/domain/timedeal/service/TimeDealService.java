@@ -5,6 +5,7 @@ import com.example.timedealserver.domain.product.exeption.ProductExceptionType;
 import com.example.timedealserver.domain.product.respository.ProductRepository;
 import com.example.timedealserver.domain.timedeal.dto.request.TimeDealAddRequestDto;
 import com.example.timedealserver.domain.timedeal.dto.request.TimeDealModifyRequestDto;
+import com.example.timedealserver.domain.timedeal.dto.response.TimeDealListResponseDto;
 import com.example.timedealserver.domain.timedeal.entity.TimeDeal;
 import com.example.timedealserver.domain.timedeal.exeption.TimeDealExceptionType;
 import com.example.timedealserver.domain.timedeal.repository.TimeDealRepository;
@@ -17,6 +18,10 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Transactional
@@ -65,6 +70,25 @@ public class TimeDealService {
         timeDeal.changeStartTime(dto.getStartTime());
 
         return timedealId;
+    }
+
+    @Transactional(readOnly = true)
+    public List<TimeDealListResponseDto> showTimeDeals(HttpSession session) {
+
+        User loginUser = checkLoginStatus(session);
+
+        checkAdminUser(loginUser);
+
+        List<Product> products = productRepository.findByUserId(loginUser.getId());
+
+        List<TimeDeal> timeDeals = new ArrayList<>();
+        for (Product product : products) {
+            timeDeals.addAll(timeDealRepository.findByProductId(product.getId()).stream().collect(Collectors.toList()));
+        }
+
+        return timeDeals.stream().map(timeDeal ->
+                new TimeDealListResponseDto(timeDeal.getProduct().getName(), timeDeal.getDiscountPrice(), timeDeal.getOriginalPrice(),
+                        timeDeal.getAmount(), timeDeal.getStartTime())).collect(Collectors.toList());
     }
 
     private TimeDeal checkTimeDealUser(Long timedealId, User loginUser) {

@@ -2,7 +2,7 @@ package com.example.timedealserver.domain.product.controller;
 
 import com.example.timedealserver.domain.product.dto.request.ProductAddRequestDto;
 import com.example.timedealserver.domain.product.dto.request.ProductModifyRequestDto;
-import com.example.timedealserver.domain.product.dto.response.ProductSimpleResponse;
+import com.example.timedealserver.domain.product.dto.response.ProductListResponseDto;
 import com.example.timedealserver.domain.product.service.ProductService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -33,11 +33,11 @@ public class ProductController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ProductSimpleResponse>> showProductList(HttpServletRequest request) {
+    public ResponseEntity<List<ProductListResponseDto>> showProductList(HttpServletRequest request) {
 
         HttpSession session = request.getSession(false);
 
-        List<ProductSimpleResponse> products = productService.showProductList(session);
+        List<ProductListResponseDto> products = productService.showProductList(session);
 
         return new ResponseEntity<>(products, HttpStatus.OK);
     }

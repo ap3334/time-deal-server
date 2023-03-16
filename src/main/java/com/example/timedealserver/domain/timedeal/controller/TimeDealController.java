@@ -2,6 +2,7 @@ package com.example.timedealserver.domain.timedeal.controller;
 
 import com.example.timedealserver.domain.timedeal.dto.request.TimeDealAddRequestDto;
 import com.example.timedealserver.domain.timedeal.dto.request.TimeDealModifyRequestDto;
+import com.example.timedealserver.domain.timedeal.dto.response.TimeDealListResponseDto;
 import com.example.timedealserver.domain.timedeal.service.TimeDealService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -10,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RequestMapping("/timedeal")
 @RequiredArgsConstructor
@@ -51,5 +54,15 @@ public class TimeDealController {
 
         return new ResponseEntity<>(id, HttpStatus.OK);
 
+    }
+
+    @GetMapping
+    public ResponseEntity<List<TimeDealListResponseDto>> showTimeDeals(HttpServletRequest request) {
+
+        HttpSession session = request.getSession(false);
+
+        List<TimeDealListResponseDto> timeDeals = timeDealService.showTimeDeals(session);
+
+        return new ResponseEntity<>(timeDeals, HttpStatus.OK);
     }
 }
