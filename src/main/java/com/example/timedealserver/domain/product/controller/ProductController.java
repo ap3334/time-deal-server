@@ -43,7 +43,7 @@ public class ProductController {
     }
 
     @PutMapping("/{productId}")
-    public ResponseEntity<Long> modifyProduct(@Valid @RequestBody ProductModifyRequestDto productModifyRequestDto,
+    public ResponseEntity<Long> deleteProduct(@Valid @RequestBody ProductModifyRequestDto productModifyRequestDto,
                                               @PathVariable Long productId,
                                               HttpServletRequest request) {
 
@@ -55,7 +55,7 @@ public class ProductController {
     }
 
     @DeleteMapping("/{productId}")
-    public ResponseEntity modifyProduct(@PathVariable Long productId, HttpServletRequest request) {
+    public ResponseEntity deleteProduct(@PathVariable Long productId, HttpServletRequest request) {
 
         HttpSession session = request.getSession(false);
 
