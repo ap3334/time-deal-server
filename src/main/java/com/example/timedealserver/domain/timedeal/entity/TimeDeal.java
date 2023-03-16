@@ -48,4 +48,8 @@ public class TimeDeal extends BaseEntity {
     public void changeStartTime(LocalDateTime startTime) {
         this.startTime = startTime;
     }
+
+    public void purchase() {
+        amount = amount - 1;
+    }
 }

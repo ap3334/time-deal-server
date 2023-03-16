@@ -6,6 +6,7 @@ import com.example.timedealserver.global.entity.BaseEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -22,4 +23,10 @@ public class Orders extends BaseEntity {
 
     private int price;
 
+    @Builder
+    public Orders(User user, TimeDeal timeDeal, int price) {
+        this.user = user;
+        this.timeDeal = timeDeal;
+        this.price = price;
+    }
 }
